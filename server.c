@@ -51,7 +51,7 @@ void get_joke ()
     }
     sqlite3_close(db);
 }
-//--------------
+
 void error(char *msg)
 {
 	fprintf(stderr, "%s: %s\n", msg, strerror(errno));
