@@ -1,3 +1,5 @@
+// Simple client to retrieve a joke from the server.
+
 #include<stdio.h>
 #include<string.h>
 #include<errno.h>
@@ -8,12 +10,14 @@
 #include<sys/socket.h>
 #include<arpa/inet.h>
 
+// Wrapper to display error messages with error-number.
 void error(char *msg)
 {
 	fprintf(stderr, "%s: %s\n", msg, strerror(errno));
 	exit(1);
 }
 
+// Function to open socket and to return it.
 int open_socket(char *host, char *port)
 {
 	struct addrinfo *res;
@@ -38,6 +42,8 @@ int open_socket(char *host, char *port)
 	return d_sock;
 }
 
+// Function to send information over a socket.
+/*
 int say(int socket, char *s)
 {
 	int result = send(socket, s, strlen(s), 0);
@@ -45,11 +51,13 @@ int say(int socket, char *s)
 		fprintf(stderr, "%s: %s\n", "Error talking to server", strerror(errno));
 	return result;
 }
+*/
 
 int main(int argc, char **argv)
 {
 	int d_sock;
 	
+	// Hardcoded to communicate with JokeServer
 	d_sock = open_socket("127.0.0.1", "30000");
 	char buf[255];
 
