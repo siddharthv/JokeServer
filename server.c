@@ -121,7 +121,6 @@ int main(int argc, char **argv)
 	struct sockaddr_storage client_addr;
 	unsigned int address_size = sizeof(client_addr);
 	puts("Waiting for connection\n");
-	char buf[500];
 	while(1)
 	{
 		int connect_d = accept(listener_d, (struct sockaddr *) &client_addr, &address_size);

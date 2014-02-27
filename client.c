@@ -56,12 +56,10 @@ int say(int socket, char *s)
 int main(int argc, char **argv)
 {
 	int d_sock;
+	char rec[256];
 	
 	// Hardcoded to communicate with JokeServer
 	d_sock = open_socket("127.0.0.1", "30000");
-	char buf[255];
-
-	char rec[256];
 	int bytesRcvd = recv(d_sock, rec, 255, 0);
 	while (bytesRcvd)
 	{
