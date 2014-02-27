@@ -1,3 +1,5 @@
+// A simple server that sends jokes to client's connecting to it.
+
 #include<stdio.h>
 #include<string.h>
 #include<errno.h>
@@ -11,6 +13,7 @@
 // GLOBAL DS to hold joke
 char msg[1000];
 
+// Standard callback method.
 static int callback(void *data, int argc, char **argv, char **azColName){
     int i;
     fprintf(stderr, "%s: ", (const char*)data);
@@ -22,6 +25,7 @@ static int callback(void *data, int argc, char **argv, char **azColName){
     return 0;
 }
 
+// Function to obtain joke from a sqlite database.
 void get_joke ()
 {
     sqlite3 *db;
@@ -52,12 +56,14 @@ void get_joke ()
     sqlite3_close(db);
 }
 
+// Wrapper to display error messages with errrno.
 void error(char *msg)
 {
 	fprintf(stderr, "%s: %s\n", msg, strerror(errno));
 	exit(1);
 }
 
+// Function to open listener socket.
 int open_listener_socket()
 {
 	int s = socket(PF_INET, SOCK_STREAM, 0);
@@ -67,6 +73,7 @@ int open_listener_socket()
 	return s;
 }
 
+// Function to bind socket with port.
 void bind_to_port(int socket, int port)
 {
 	struct sockaddr_in name;
@@ -82,6 +89,7 @@ void bind_to_port(int socket, int port)
 		error("Cannot bind to socket");
 }
 
+// Function to send messages over a socket.
 int say(int socket, char *s)
 {
 	int result = send(socket, s, strlen(s), 0);
@@ -93,6 +101,7 @@ int say(int socket, char *s)
 
 int listener_d;
 
+// Experimental: Method to handle SIGINT
 void handle_shutdown(int sig)
 {
 	if (listener_d)
@@ -119,7 +128,7 @@ int main(int argc, char **argv)
 		if (connect_d == -1)
 			error("Cannot open secondary socket");
 
-		char *greeting = "Fetching Joke!\n";
+		char *greeting = "Fetching Joke of the Day!\n";
 		send(connect_d, greeting, strlen(greeting), 0);
 		
 		get_joke();
